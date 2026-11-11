@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Terra Shield NER</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">⛰️</div>
+
+            <div>
+                <h2>Terra Shield</h2>
+                <span>NER</span>
+            </div>
+        </div>
+        <!-- MONITORING LOCATION -->
+        <div class="location-selector">
+
+        <label for="monitoringLocation">
+        📍 Monitoring Location
+        </label>
+
+    <select id="monitoringLocation">
+        <option value="">Select Location</option>
+    </select>
+
+</div> 
+<!-- APPEARANCE CONTROL -->
+<div class="font-color-control">
+
+    <span>Appearance</span>
+
+    <div class="font-buttons">
+
+        <button id="whiteFontBtn" onclick="setTheme('light')">
+            ☀️ Light
+        </button>
+
+        <button id="blackFontBtn" onclick="setTheme('dark')">
+            🌙 Dark
+        </button>
+
+    </div>
+
+</div>
+        <nav>
+
+            <a href="#" class="nav-item active">
+                📊 Dashboard
+            </a>
+
+            <a href="#" class="nav-item">
+                🗺️ Risk Map
+            </a>
+
+            <a href="#" class="nav-item">
+                🚨 Alerts
+            </a>
+
+            <a href="#" class="nav-item">
+                📍 Field Reports
+            </a>
+
+            <a href="#" class="nav-item">
+                📈 Analytics
+            </a>
+
+        </nav>
+
+        <div class="system-status">
+
+            <div class="status-dot"></div>
+
+            <div>
+                <strong>System Online</strong>
+                <p>Monitoring active</p>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>AI Landslide Risk Monitor</h1>
+
+                <p>
+                    North Eastern Region • Real-time disaster intelligence
+                </p>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="live-status">
+                    <span></span>
+                    LIVE
+                </div>
+
+                <button class="notification">
+                    🔔
+                </button>
+
+                <div class="profile">
+                    PS
+                    
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- KPI CARDS -->
+
+        <section class="kpi-grid">
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon red">
+                    ⚠️
+                </div>
+
+                <div>
+
+                   <p>High Risk Zones</p>
+                 <h2 id="highRiskZones">0</h2>
+                 <span class="danger-text" id="riskChange">
+    Dataset based
+                  </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon orange">
+                    🚧
+                </div>
+
+                <div>
+
+                   <p>Blocked Roads</p>
+                 <h2 id="blockedRoads">0</h2>
+                 <span id="blockedRoadStatus">
+                  Dataset based
+                 </span> 
+
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon blue">
+                    📡
+                </div>
+
+                <div>
+
+                    <p>Active Sensors</p>
+                  <h2 id="activeSensors">0</h2>
+                  <span id="sensorStatus">
+    Dataset based
+                  </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon purple">
+                    🚨
+                </div>
+
+                <div>
+
+                    <p>Active Alerts</p>
+                 <h2 id="activeAlerts">0</h2>
+                 <span id="alertStatus">
+                  Dataset based
+                </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- MAP + RISK PANEL -->
+
+        <section class="dashboard-grid">
+
+            <!-- MAP -->
+
+            <div class="panel map-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>Regional Risk Map</h2>
+
+                        <p>
+                            Live landslide vulnerability zones
+                        </p>
+
+                    </div>
+
+                    <button class="map-button">
+                        ⛶ Expand
+                    </button>
+
+                </div>
+
+                <div id="map"></div>
+
+            </div>
+
+
+            <!-- AI RISK -->
+
+            <div class="panel risk-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>AI Risk Prediction</h2>
+
+                        <p>Selected location</p>
+
+                    </div>
+
+                   <span id="riskBadge">SELECT</span>
+
+                </div>
+
+
+                <div class="location">
+
+                    <span>📍</span>
+
+                    <div>
+
+                       <strong id="locationName">Select Location</strong>
+                       <p id="locationState">---</p>
+                    </div>
+
+                </div>
+
+
+                <div class="risk-score">
+
+                    <div class="score-circle">
+
+                        <span id="riskPercentage">0%</span>
+
+                    </div>
+
+                    <div>
+
+                        <p>Landslide Probability</p>
+
+                        <h3 id="riskLevel">No Location Selected</h3>
+
+                    </div>
+
+                </div>
+
+
+               
+
+                    <div>
+
+                        <span>💧 Soil Moisture</span>
+
+                        <strong id="soilValue">N/A</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>⛰️ Slope</span>
+
+                        <strong id="slopeValue">N/A</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>📚 Historical Events</span>
+
+                        <strong id="historicalValue">N/A</strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="warning-box" id="warningBox">
+                ⚠️ Select a location to view risk information.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- LOWER SECTION -->
+
+        <section class="lower-grid">
+
+
+            <!-- FORECAST -->
+
+            <div class="panel forecast-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>Risk Forecast</h2>
+
+                        <p>
+                            AI predicted risk levels
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="forecast">
+
+                    <div>
+                 <span>NOW</span>
+                 <strong id="forecastNow">0%</strong>
+                 <small id="forecastNowLevel">-</small>
+                 </div>
+
+                    <div>
+                 <span>24 HOURS</span>
+                 <strong id="forecast24">0%</strong>
+                 <small id="forecast24Level">-</small>
+                 </div>
+
+                    <div>
+                  <span>48 HOURS</span>
+                  <strong id="forecast48">0%</strong>
+                  <small id="forecast48Level">-</small>
+                  </div>
+
+                    <div>
+                <span>72 HOURS</span>
+                <strong id="forecast72">0%</strong>
+                <small id="forecast72Level">-</small>
+                </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEATHER -->
+
+            <div class="panel weather-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>Weather Conditions</h2>
+
+                        <p id="weatherLocation">Select Location • Current</p>
+
+                    </div>
+
+                    <span class="weather-icon">
+                        🌧️
+                    </span>
+
+                </div>
+
+
+                <div class="weather-data">
+
+                    <div>
+
+                        <span>Rainfall</span>
+
+                        <strong id="weatherRainfall">N/A</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Temperature</span>
+
+                        <strong id="weatherTemperature">N/A</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Humidity</span>
+
+                        <strong id="weatherHumidity">N/A</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Wind</span>
+
+                        <strong id="weatherWind">N/A</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- EMERGENCY PRIORITY -->
+
+        <section class="panel emergency-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>🚨 Emergency Response Priority</h2>
+
+                    <p>
+                        Areas requiring immediate attention
+                    </p>
+
+                </div>
+
+                <button class="view-all">
+                    View All
+                </button>
+
+            </div>
+
+
+            <div class="priority-table">
+
+                <div class="table-header">
+
+                    <span>Location</span>
+                    <span>Risk</span>
+                    <span>Population</span>
+                    <span>Road Status</span>
+                    <span>Priority</span>
+
+                </div>
+                <div id="priorityTableBody"></div>
+                </div>
+
+                
+
+                </section>
+
+
+    </main>
+
+
+    <!-- Leaflet JS -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
