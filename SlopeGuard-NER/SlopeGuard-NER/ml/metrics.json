@@ -1,7 +1,0 @@
-{
-  "grid_size_degrees": 0.1,
-  "positive_cells": 925,
-  "negative_cells_used": 925,
-  "accuracy": 0.845945945945946,
-  "roc_auc": 0.8989335281227172
-}
